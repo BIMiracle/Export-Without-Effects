@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      body {
+        margin: 16px;
+        font-family: Inter, sans-serif;
+        background: var(--figma-color-bg);
+        color: var(--figma-color-text);
+      }
+
+      .title {
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 8px;
+      }
+
+      .desc {
+        font-size: 12px;
+        line-height: 1.5;
+        color: var(--figma-color-text-secondary);
+        margin-bottom: 12px;
+      }
+
+      .row {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 8px;
+      }
+
+      button {
+        flex: 1;
+        height: 32px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        background: var(--figma-color-bg-brand);
+        color: var(--figma-color-text-onbrand);
+      }
+
+      button.secondary {
+        background: var(--figma-color-bg-secondary);
+        color: var(--figma-color-text);
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="title">导出实际 UI 尺寸</div>
+
+    <div class="desc">
+      选中一个图层后导出。插件会按照图层本身边界创建 Slice，避免阴影把导出图片尺寸撑大。
+    </div>
+
+    <div class="row">
+      <button onclick="exportImage(1)">导出 1x</button>
+      <button onclick="exportImage(2)">导出 2x</button>
+    </div>
+
+    <div class="row">
+      <button class="secondary" onclick="exportImage(3)">导出 3x</button>
+      <button class="secondary" onclick="exportImage(4)">导出 4x</button>
+    </div>
+
+    <script>
+      function exportImage(scale) {
+        parent.postMessage(
+          {
+            pluginMessage: {
+              type: 'export',
+              scale
+            }
+          },
+          '*'
+        )
+      }
+
+      onmessage = event => {
+        const message = event.data.pluginMessage
+
+        if (!message || message.type !== 'download') return
+
+        const blob = new Blob([message.bytes], {
+          type: 'image/png'
+        })
+
+        const url = URL.createObjectURL(blob)
+
+        const a = document.createElement('a')
+        a.href = url
+        a.download = message.filename
+        document.body.appendChild(a)
+        a.click()
+        a.remove()
+
+        URL.revokeObjectURL(url)
+      }
+    </script>
+  </body>
+</html>
