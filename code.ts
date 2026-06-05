@@ -97,19 +97,17 @@ function removeDropShadowDeep(node: SceneNode): number {
   if ('effects' in node) {
     const currentEffects = node.effects
 
-    if (currentEffects && currentEffects !== figma.mixed) {
-      const nextEffects = currentEffects.filter(effect => {
-        if (effect.type === 'DROP_SHADOW') {
-          removedCount++
-          return false
-        }
-
-        return true
-      })
-
-      if (nextEffects.length !== currentEffects.length) {
-        ;(node as any).effects = nextEffects
+    const nextEffects = currentEffects.filter(effect => {
+      if (effect.type === 'DROP_SHADOW') {
+        removedCount++
+        return false
       }
+
+      return true
+    })
+
+    if (nextEffects.length !== currentEffects.length) {
+      node.effects = nextEffects
     }
   }
 
