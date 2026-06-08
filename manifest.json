@@ -6,7 +6,7 @@
 	"capabilities": [],
 	"enableProposedApi": false,
 	"documentAccess": "dynamic-page",
-	"editorType": ["figma", "figjam"],
+	"editorType": ["figma"],
 	"ui": "ui.html",
 	"networkAccess": {
 		"allowedDomains": ["none"]
