@@ -61,7 +61,8 @@ if (figma.editorType === 'figma') {
         }
       })
 
-      const filename = `${safeFileName(selectedNode.name)}@${scale}x-no-shadow.png`
+      // const filename = `${safeFileName(selectedNode.name)}@${scale}x-no-shadow.png`
+      const filename = `${safeFileName(selectedNode.name)}.png`
 
       figma.ui.postMessage({
         type: 'download',
